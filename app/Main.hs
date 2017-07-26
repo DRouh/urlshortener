@@ -57,7 +57,17 @@ app rConn = do
                resp <- liftIO (saveURI rConn shorty uri')
                html (shortyCreated resp short)
           Nothing -> text (shortyAintUri uri)
-
+  get "/:short" $ do
+     short <- param "short"
+     uri <- liftIO (getURI rConn short)
+     case uri of
+          Left reply -> text (TL.pack (show reply))
+          Right mbBS -> case mbBS of
+              Nothing -> text "uri not found"
+              Just bs -> html (shortyFound tbs)
+                   where tbs :: TL.Text
+                         tbs = TL.fromStrict (decodeUtf8 bs)
+                         
 main :: IO ()
 main = do
   putStrLn "hello world"
