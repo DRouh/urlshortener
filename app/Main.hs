@@ -67,7 +67,8 @@ app rConn = do
               Just bs -> html (shortyFound tbs)
                    where tbs :: TL.Text
                          tbs = TL.fromStrict (decodeUtf8 bs)
-                         
+
 main :: IO ()
 main = do
-  putStrLn "hello world"
+  rConn <- R.connect R.defaultConnectInfo
+  scotty 3000 (app rConn)
