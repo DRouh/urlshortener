@@ -1,0 +1,29 @@
+name:                shorty
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/DRouh/urlshortener
+--license:             
+--license-file:        
+author:              DRouh
+maintainer:          dimerouh@gmail.com
+--copyright:           2017 Author name here
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+--extra-source-files:  
+
+executable shorty
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base
+                     , bytestring
+                     , hedis
+                     , mtl
+                     , network-uri
+                     , random
+                     , scotty
+                     , semigroups
+                     , text
+                     , transformers
