@@ -43,6 +43,21 @@ shortyAintUri uri = TL.concat [uri, " wasn't a url, did you forget http://?"]
 shortyFound :: TL.Text -> TL.Text
 shortyFound tbs = TL.concat ["<a href=\"", tbs, "\">", tbs, "</a>"]
 
+app :: R.Connection -> ScottyM ()
+app rConn = do
+  get "/" $ do
+     uri <- param "uri"
+     let parsedUri :: Maybe URI
+         parsedUri = parseURI (TL.unpack uri)
+     case parsedUri of
+          Just _ -> do
+               short <- liftIO shortyGen
+               let shorty = BC.pack short
+                   uri' = encodeUtf8 (TL.toStrict uri)
+               resp <- liftIO (saveURI rConn shorty uri')
+               html (shortyCreated resp short)
+          Nothing -> text (shortyAintUri uri)
+
 main :: IO ()
 main = do
   putStrLn "hello world"
